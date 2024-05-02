@@ -110,12 +110,51 @@ public:
 
 int main() {
     string dato;
+    int con=0;
     cout<<"Se creo la linea principal "<<endl;
     ContenedorGenerico<string> miContenedor;
-    cout<<"Si quieres agregar una linea nueva ingresa A"; cin>>dato;
-    if(dato=="A"){
-        miContenedor.saber_capacidad();
+    while (con==0){
+        cout<<"Si quieres agregar una linea nueva ingresa a"<<endl;
+        cout<<"Si desea eliminar una linea ingrese b"<<endl;
+        cout<<"Si desea saber la cantidad de lineas de la red metro ingrese c"<<endl;
+        cout<<"Si desea saber la cantidad de "<<endl;
+        cin>>dato;
+        if(dato=="a"){
+            miContenedor.agregar_posicion_intermedia_o_extremo();
+            //miContenedor.mostrarElementos();
+        }else if (dato=="b")
+        {
+            miContenedor.mostrarElementos();
+            cout<<"Ingrese la estacion que desea eliminar"<<endl;
+            cin>>dato;
+            miContenedor.eliminarElemento(dato);
+        }else if(dato=="c"){
+
+        }else if (dato=="d")
+        {
+            miContenedor.cantidad_de_estaciones();
+        }else if (dato=="e")
+        {
+            cout<<"Ingrese la estacion que desea buscar: "; cin>>dato;
+            miContenedor.buscarElemento(dato);
+        }else if (dato=="f")
+        {
+            /* code */
+        }else if(dato=="g"){
+
+        }else if (dato=="h")
+        {
+            /* code */
+        }
+
+
+
+
+
+        cout<<"Si deseas volver al menu principal ingrese 0 "; cin>>con;
     }
+    return 0;
+}
 
     return 0;
 }
