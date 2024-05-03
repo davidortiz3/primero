@@ -1,160 +1,93 @@
 #include <iostream>
 #include <string>
 using namespace std;
-template<typename T>
-
-class ContenedorGenerico {
+template <typename linea, typename tiempo>
+class linea1 {
 private:
-    T* elementos;
+    linea* claves;
+    tiempo* valores;
     int capacidad;
-    int tamano;    
+    int tamano;
 
 public:
-
-    ContenedorGenerico(int capacidadInicial = 10) {
-        capacidad = capacidadInicial;
-        elementos = new T[capacidad];
-        tamano = 0;
+    linea1() : capacidad(10), tamano(0) {
+        claves = new linea[capacidad];
+        valores = new tiempo[capacidad];
     }
 
-    ~ContenedorGenerico() {
-        delete[] elementos;
+    ~linea1() {
+        delete[] claves;
+        delete[] valores;
     }
 
-
-    void agregarElemento(const T& elemento) {
+    void agregarElemento(const linea& clave, const tiempo& valor) {
         if (tamano >= capacidad) {
-
-            capacidad *= 2;
-            T* nuevoArreglo = new T[capacidad];
-            for (int i = 0; i < tamano; ++i) {
-                nuevoArreglo[i] = elementos[i];
-            }
-            delete[] elementos;
-            elementos = nuevoArreglo;
+            redimensionar();
         }
-        elementos[tamano++] = elemento;
+        claves[tamano] = clave;
+        valores[tamano] = valor;
+        tamano++;
     }
 
-    void eliminarUltimoElemento() {
-        if (tamano > 0) {
-            --tamano;
-        }
-    }
-
-
-    bool buscarElemento(const T& elemento) const {
+    tiempo obtenerValor(const linea& clave) const {
         for (int i = 0; i < tamano; ++i) {
-            if (elementos[i] == elemento) {
-                return true;
+            if (claves[i] == clave) {
+                return valores[i];
             }
         }
-        return false;
+        cerr << "Error: Clave no encontrada." << endl;
+        return tiempo();
     }
 
-    void mostrarElementos() const {
-        cout << "Elementos del contenedor:" << endl;
+    void eliminarElemento(const linea& clave) {
         for (int i = 0; i < tamano; ++i) {
-            cout << elementos[i] << endl;
-        }
-    }
-
-    void eliminarElemento(const T& elemento) {
-        for (int i = 0; i < tamano; ++i) {
-            if (elementos[i] == elemento) {
-
+            if (claves[i] == clave) {
                 for (int j = i; j < tamano - 1; ++j) {
-                    elementos[j] = elementos[j + 1];
+                    claves[j] = claves[j + 1];
+                    valores[j] = valores[j + 1];
                 }
-                --tamano;
+                tamano--;
                 return;
             }
         }
+        cerr << "Error: Clave no encontrada." << endl;
     }
 
-
-
-    void agregarElementoEnPosicion(const T& elemento, int posicion) {
-        if (posicion < 0 || posicion > tamano) {
-            std::cerr << "Error: Posición fuera de rango." << endl;
-            return;
+    void mostrarElementos() const {
+        cout << "Elementos del mapa:" << endl;
+        for (int i = 0; i < tamano; ++i) {
+            cout << "Clave: " << claves[i] << ", Valor: " << valores[i] << endl;
         }
-
-        if (tamano >= capacidad) {
-
-            capacidad *= 2;
-            T* nuevoArreglo = new T[capacidad];
-            for (int i = 0; i < posicion; ++i) {
-                nuevoArreglo[i] = elementos[i];
-            }
-            nuevoArreglo[posicion] = elemento;
-            for (int i = posicion + 1; i <= tamano; ++i) {
-                nuevoArreglo[i] = elementos[i - 1];
-            }
-            delete[] elementos;
-            elementos = nuevoArreglo;
-        } else {
-            for (int i = tamano; i > posicion; --i) {
-                elementos[i] = elementos[i - 1];
-            }
-            elementos[posicion] = elemento;
-        }
-
-        ++tamano;
     }
 
-    void saber_capacidad(){
-        cout<<tamaño;
+private:
+    void redimensionar() {
+        capacidad *= 2;
+        linea* nuevasClaves = new linea[capacidad];
+        tiempo* nuevosValores = new tiempo[capacidad];
+        for (int i = 0; i < tamano; ++i) {
+            nuevasClaves[i] = claves[i];
+            nuevosValores[i] = valores[i];
+        }
+        delete[] claves;
+        delete[] valores;
+        claves = nuevasClaves;
+        valores = nuevosValores;
     }
 };
 
 int main() {
-    string dato;
-    int con=0;
-    cout<<"Se creo la linea principal "<<endl;
-    ContenedorGenerico<string> miContenedor;
-    while (con==0){
-        cout<<"Si quieres agregar una linea nueva ingresa a"<<endl;
-        cout<<"Si desea eliminar una linea ingrese b"<<endl;
-        cout<<"Si desea saber la cantidad de lineas de la red metro ingrese c"<<endl;
-        cout<<"Si desea saber la cantidad de "<<endl;
-        cin>>dato;
-        if(dato=="a"){
-            miContenedor.agregar_posicion_intermedia_o_extremo();
-            //miContenedor.mostrarElementos();
-        }else if (dato=="b")
-        {
-            miContenedor.mostrarElementos();
-            cout<<"Ingrese la estacion que desea eliminar"<<endl;
-            cin>>dato;
-            miContenedor.eliminarElemento(dato);
-        }else if(dato=="c"){
+    linea1<string, string> miMapa;
+    miMapa.agregarElemento("juan", "Uno");
+    miMapa.agregarElemento("david", "Dos");
+    miMapa.agregarElemento("ortiz", "Tres");
+    miMapa.mostrarElementos();
+    miMapa.agregarElemento("diaz", "Cuatro");
+    miMapa.agregarElemento("juan", "Cinco");
+    miMapa.agregarElemento("diaz", "Seis");
+    miMapa.agregarElemento("david", "Siete");
 
-        }else if (dato=="d")
-        {
-            miContenedor.cantidad_de_estaciones();
-        }else if (dato=="e")
-        {
-            cout<<"Ingrese la estacion que desea buscar: "; cin>>dato;
-            miContenedor.buscarElemento(dato);
-        }else if (dato=="f")
-        {
-            /* code */
-        }else if(dato=="g"){
-
-        }else if (dato=="h")
-        {
-            /* code */
-        }
-
-
-
-
-
-        cout<<"Si deseas volver al menu principal ingrese 0 "; cin>>con;
-    }
-    return 0;
-}
+    miMapa.mostrarElementos();
 
     return 0;
 }
