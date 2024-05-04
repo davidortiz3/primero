@@ -1,47 +1,59 @@
 #include <iostream>
 #include <string>
 using namespace std;
-template <typename linea, typename tiempo>
-class linea1 {
+template <typename clave>
+class estaciones
+{
 private:
-    linea* claves;
-    tiempo* valores;
+    /* data */
+public:
+    estacion(/* args */);
+    estacion();
+};
+
+template <typename clave, estaciones<typename estaciones>>
+class MapaGenerico {
+private:
+    clave* claves;
+    estaciones* valores;
     int capacidad;
     int tamano;
 
 public:
-    linea1() : capacidad(10), tamano(0) {
-        claves = new linea[capacidad];
-        valores = new tiempo[capacidad];
+    MapaGenerico() : capacidad(10), tamano(0) {
+        claves = new clave[capacidad];
+        valores = new valor[capacidad];
     }
 
-    ~linea1() {
+    ~MapaGenerico() {
         delete[] claves;
         delete[] valores;
     }
 
-    void agregarElemento(const linea& clave, const tiempo& valor) {
+    void agregarElemento(const clave& clave1, const valor& valor1) {
         if (tamano >= capacidad) {
             redimensionar();
         }
-        claves[tamano] = clave;
-        valores[tamano] = valor;
+        claves[tamano] = clave1;
+        valores[tamano] = valor1;
         tamano++;
     }
 
-    tiempo obtenerValor(const linea& clave) const {
+    valor obtenerValor(const clave& clave1) const {
         for (int i = 0; i < tamano; ++i) {
-            if (claves[i] == clave) {
+            if (claves[i] == clave1) {
                 return valores[i];
             }
         }
         cerr << "Error: Clave no encontrada." << endl;
-        return tiempo();
+        return valor();
     }
 
-    void eliminarElemento(const linea& clave) {
+
+
+    void eliminarElemento(const clave& clave1) {
         for (int i = 0; i < tamano; ++i) {
-            if (claves[i] == clave) {
+            if (claves[i] == clave1) {
                 for (int j = i; j < tamano - 1; ++j) {
                     claves[j] = claves[j + 1];
                     valores[j] = valores[j + 1];
@@ -63,8 +75,8 @@ public:
 private:
     void redimensionar() {
         capacidad *= 2;
-        linea* nuevasClaves = new linea[capacidad];
-        tiempo* nuevosValores = new tiempo[capacidad];
+        clave* nuevasClaves = new clave[capacidad];
+        valor* nuevosValores = new valor[capacidad];
         for (int i = 0; i < tamano; ++i) {
             nuevasClaves[i] = claves[i];
             nuevosValores[i] = valores[i];
@@ -76,18 +88,32 @@ private:
     }
 };
 
+template <typename clave, typename ValueType>
+class red
+{
+private:
+    MapaGenerico < clave, MapaGenerico<typename clave1, typename valor>> mapa;
+public:
+    red() : red("medellin"){}
+
+    void agregarlinea(clave1 name, valor num){
+        if (mapa.obtenervalor(name)==name, )
+        {
+            /* code */
+        }
+
+    }
+
+};
+
+
 int main() {
-    linea1<string, string> miMapa;
-    miMapa.agregarElemento("juan", "Uno");
-    miMapa.agregarElemento("david", "Dos");
-    miMapa.agregarElemento("ortiz", "Tres");
-    miMapa.mostrarElementos();
-    miMapa.agregarElemento("diaz", "Cuatro");
-    miMapa.agregarElemento("juan", "Cinco");
-    miMapa.agregarElemento("diaz", "Seis");
-    miMapa.agregarElemento("david", "Siete");
 
-    miMapa.mostrarElementos();
+    MapaGenerico<string, string> miMapa;
 
+    miMapa.agregarElemento("uno", "Uno");
+    miMapa.agregarElemento("dos", "Dos");
+    miMapa.agregarElemento("tres", "Tres");
+    miMapa.mostrarElementos();
     return 0;
 }
