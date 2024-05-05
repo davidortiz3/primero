@@ -79,13 +79,14 @@ public:
     }
 
     void obtener_estacion(const T1& temp){
+        int con=0;
         for (int i = 0; i < tamaño; i++)
         {
             if(lineas[i]==temp){
-                cout<<"si esta";
-                break;
+                con++;
             }
         }
+        cout<<con;
     }
 
     void saber_linea(){
@@ -115,19 +116,33 @@ public:
                 {
                     cout<<tiempos[i];
                 }
+            }
+        }
+    }
+
+    int saber_indice(T1 linea, T2 estacion){
+        for (int i = 0; i < tamaño; i++)
+        {
+            if (lineas[i]==linea)
+            {
+                if (estaciones[i]==estacion)
+                {
+                    return i;
+                }
 
             }
         }
     }
 
     void eliminarElemento(int indice) {
-        if (indice >= 0 && indice < tamano) {
-            for (int i = indice; i < tamano - 1; ++i) {
-                valores1[i] = valores1[i + 1];
-                valores2[i] = valores2[i + 1];
-                valores3[i] = valores3[i + 1];
+
+        if (indice >= 0 && indice < tamaño) {
+            for (int i = indice; i < tamaño - 1; ++i) {
+                lineas[i] = lineas[i + 1];
+                estaciones[i] = estaciones[i + 1];
+                tiempos[i] = tiempos[i + 1];
             }
-            tamano--;
+            tamaño--;
         } else {
             cerr<<"Error: Índice fuera de rango." <<endl;
         }
@@ -140,13 +155,16 @@ public:
 int main() {
     red<string, string, string> principal;
     //El primer parametro es el nombre de la linea el segundo es el nombre de la estacion y el ultimo es el tiempo
-    principal.agregar_valor("juan", "david", "0,3");
-    principal.agregar_valor("david", "juan1", "7,6");
-    principal.agregar_valor("david", "juan4", "6,5");
-    principal.agregar_valor("david", "juan7", "5,0");
+    //principal.agregar_valor("juan", "david", "0,3");
+    principal.agregar_valor("david", "A", "7,6");
+    principal.agregar_valor("david", "B", "6,5");
+    principal.agregar_valor("david", "C", "5,9");
+    principal.agregar_valor("david", "D", "9,0");
 
-    principal.saber_tiempo("david", "juan4");
-
-
+    int n=principal.saber_indice("david", "A");
+    principal.eliminarElemento(n);
+    //principal.saber_estacion_de_linea("juan");
+    //principal.obtener_estacion("david");
+    principal.saber_estacion_de_linea("david");
     return 0;
 }
