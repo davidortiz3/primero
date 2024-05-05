@@ -17,7 +17,6 @@ private:
     T* arr;
     int size;
     int capacity;
-
 public:
     MyVector() : size(0), capacity(1), arr(new T[1]) {}
 
@@ -39,7 +38,7 @@ public:
         if (size > 0) {
             size--;
         } else {
-            throw std::out_of_range("El vector está vacío");
+            throw OutOfRangeException("El vector está vacío");
         }
     }
     T& operator[](int index){
@@ -81,7 +80,7 @@ public:
     }
     void insert(int index, const T& val) {
         if (index < 0 || index > size) {
-            throw std::out_of_range("Índice fuera de rango");
+            throw OutOfRangeException("Índice fuera de rango");
         }
         if (size == capacity) {
             T* temp = new T[2 * capacity];
