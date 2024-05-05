@@ -1,119 +1,152 @@
 #include <iostream>
 #include <string>
 using namespace std;
-template <typename clave>
-class estaciones
+template <typename T>
+class lineaP
 {
 private:
-    /* data */
+    T linea;
+    T estacion;
+    T time;
 public:
-    estacion(/* args */);
-    estacion();
-};
-
-template <typename clave, estaciones<typename estaciones>>
-class MapaGenerico {
-private:
-    clave* claves;
-    estaciones* valores;
-    int capacidad;
-    int tamano;
-
-public:
-    MapaGenerico() : capacidad(10), tamano(0) {
-        claves = new clave[capacidad];
-        valores = new valor[capacidad];
+    void agregar_valores(T lineas,T estaciones,T time1){
+        linea=lineas;
+        estacion=estaciones;
+        time=time1;
+    }
+    void saber_linea(){
+        cout<< linea;
     }
 
-    ~MapaGenerico() {
-        delete[] claves;
-        delete[] valores;
+    T saber_estacion(){
+        return estacion;
     }
 
-    void agregarElemento(const clave& clave1, const valor& valor1) {
-        if (tamano >= capacidad) {
-            redimensionar();
-        }
-        claves[tamano] = clave1;
-        valores[tamano] = valor1;
-        tamano++;
-    }
-
-    valor obtenerValor(const clave& clave1) const {
-        for (int i = 0; i < tamano; ++i) {
-            if (claves[i] == clave1) {
-                return valores[i];
-            }
-        }
-        cerr << "Error: Clave no encontrada." << endl;
-        return valor();
-    }
-
-
-
-    void eliminarElemento(const clave& clave1) {
-        for (int i = 0; i < tamano; ++i) {
-            if (claves[i] == clave1) {
-                for (int j = i; j < tamano - 1; ++j) {
-                    claves[j] = claves[j + 1];
-                    valores[j] = valores[j + 1];
-                }
-                tamano--;
-                return;
-            }
-        }
-        cerr << "Error: Clave no encontrada." << endl;
-    }
-
-    void mostrarElementos() const {
-        cout << "Elementos del mapa:" << endl;
-        for (int i = 0; i < tamano; ++i) {
-            cout << "Clave: " << claves[i] << ", Valor: " << valores[i] << endl;
-        }
-    }
-
-private:
-    void redimensionar() {
-        capacidad *= 2;
-        clave* nuevasClaves = new clave[capacidad];
-        valor* nuevosValores = new valor[capacidad];
-        for (int i = 0; i < tamano; ++i) {
-            nuevasClaves[i] = claves[i];
-            nuevosValores[i] = valores[i];
-        }
-        delete[] claves;
-        delete[] valores;
-        claves = nuevasClaves;
-        valores = nuevosValores;
+    T saber_time(){
+        return time;
     }
 };
 
-template <typename clave, typename ValueType>
+
+template<typename T1, typename T2, typename T3>
 class red
 {
 private:
-    MapaGenerico < clave, MapaGenerico<typename clave1, typename valor>> mapa;
-public:
-    red() : red("medellin"){}
+    T1* lineas;
+    T2* estaciones;
+    T3* tiempos;
+    int cantidad;
+    int tamaño;
 
-    void agregarlinea(clave1 name, valor num){
-        if (mapa.obtenervalor(name)==name, )
+    void nueva_dimencion(){
+        cantidad*=2;
+        T1* nuevo=new T1[cantidad];
+        T2* nuevo1=new T2[cantidad];
+        T3* nuevo2=new T3[cantidad];
+        for (int i = 0; i < tamaño; i++)
         {
-            /* code */
+            nuevo[i]=lineas[i];
+            nuevo1[i]=estaciones[i];
+            nuevo2[i]=tiempos[i];
+        }
+        delete[] lineas;
+        delete[] estaciones;
+        delete[] tiempos;
+        lineas=nuevo;
+        estaciones=nuevo1;
+        tiempos=nuevo2;
+
+    }
+public:
+    red() : cantidad(10), tamaño(0){
+        lineas=new T1[cantidad];
+        estaciones=new T2[cantidad];
+        tiempos=new T3[cantidad];
+    }
+    ~red(){
+        delete[] lineas;
+    }
+
+    void agregar_valor(T1 linea1, T2 estacion, T3 tiempo){
+        if(tamaño>=cantidad){
+            nueva_dimencion();
         }
 
+        lineas[tamaño]=linea1;
+        estaciones[tamaño]=estacion;
+        tiempos[tamaño]=tiempo;
+        tamaño++;
+    }
+
+    void obtener_estacion(const T1& temp){
+        for (int i = 0; i < tamaño; i++)
+        {
+            if(lineas[i]==temp){
+                cout<<"si esta";
+                break;
+            }
+        }
+    }
+
+    void saber_linea(){
+        for (int i = 0; i < tamaño; i++)
+        {
+            cout<<lineas[i]<<" ";
+        }
+
+    }
+
+    void saber_estacion_de_linea(T1 linea){
+        for (int i = 0; i < tamaño; i++)
+        {
+            if (lineas[i]==linea)
+            {
+                cout<<estaciones[i]<<" ";
+            }
+        }
+    }
+
+    void saber_tiempo(T1 linea, T2 estacion){
+        for (int i = 0; i < tamaño; i++)
+        {
+            if (lineas[i]==linea)
+            {
+                if (estaciones[i]==estacion)
+                {
+                    cout<<tiempos[i];
+                }
+
+            }
+        }
+    }
+
+    void eliminarElemento(int indice) {
+        if (indice >= 0 && indice < tamano) {
+            for (int i = indice; i < tamano - 1; ++i) {
+                valores1[i] = valores1[i + 1];
+                valores2[i] = valores2[i + 1];
+                valores3[i] = valores3[i + 1];
+            }
+            tamano--;
+        } else {
+            cerr<<"Error: Índice fuera de rango." <<endl;
+        }
     }
 
 };
 
 
+
 int main() {
+    red<string, string, string> principal;
+    //El primer parametro es el nombre de la linea el segundo es el nombre de la estacion y el ultimo es el tiempo
+    principal.agregar_valor("juan", "david", "0,3");
+    principal.agregar_valor("david", "juan1", "7,6");
+    principal.agregar_valor("david", "juan4", "6,5");
+    principal.agregar_valor("david", "juan7", "5,0");
 
-    MapaGenerico<string, string> miMapa;
+    principal.saber_tiempo("david", "juan4");
 
-    miMapa.agregarElemento("uno", "Uno");
-    miMapa.agregarElemento("dos", "Dos");
-    miMapa.agregarElemento("tres", "Tres");
-    miMapa.mostrarElementos();
+
     return 0;
 }
