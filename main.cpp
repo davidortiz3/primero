@@ -1,93 +1,93 @@
 #include <iostream>
 #include <string>
 using namespace std;
-template <typename linea, typename tiempo>
-class linea1 {
+template <typename line, typename time>
+class line1 {
 private:
-    linea* claves;
-    tiempo* valores;
-    int capacidad;
-    int tamano;
+    line* keys;
+    time* values;
+    int capacity;
+    int size;
 
 public:
-    linea1() : capacidad(10), tamano(0) {
-        claves = new linea[capacidad];
-        valores = new tiempo[capacidad];
+    line1() : capacity(10), size(0) {
+        keys = new line[capacity];
+        values = new time[capacity];
     }
 
-    ~linea1() {
-        delete[] claves;
-        delete[] valores;
+    ~line1() {
+        delete[] keys;
+        delete[] values;
     }
 
-    void agregarElemento(const linea& clave, const tiempo& valor) {
-        if (tamano >= capacidad) {
-            redimensionar();
+    void addElement(const line& key, const time& value) {
+        if (size >= capacity) {
+            resize();
         }
-        claves[tamano] = clave;
-        valores[tamano] = valor;
-        tamano++;
+        keys[capacity] = key;
+        values[size] = value;
+        size++;
     }
 
-    tiempo obtenerValor(const linea& clave) const {
-        for (int i = 0; i < tamano; ++i) {
-            if (claves[i] == clave) {
-                return valores[i];
+    time getValue(const line& key) const {
+        for (int i = 0; i < size; ++i) {
+            if (keys[i] == key) {
+                return values[i];
             }
         }
         cerr << "Error: Clave no encontrada." << endl;
-        return tiempo();
+        return time();
     }
 
-    void eliminarElemento(const linea& clave) {
-        for (int i = 0; i < tamano; ++i) {
-            if (claves[i] == clave) {
-                for (int j = i; j < tamano - 1; ++j) {
-                    claves[j] = claves[j + 1];
-                    valores[j] = valores[j + 1];
+    void deleteElement(const line& key) {
+        for (int i = 0; i < size; ++i) {
+            if (keys[i] == key) {
+                for (int j = i; j < size - 1; ++j) {
+                    keys[j] = keys[j + 1];
+                    values[j] = values[j + 1];
                 }
-                tamano--;
+                size--;
                 return;
             }
         }
         cerr << "Error: Clave no encontrada." << endl;
     }
 
-    void mostrarElementos() const {
+    void showElements() const {
         cout << "Elementos del mapa:" << endl;
-        for (int i = 0; i < tamano; ++i) {
-            cout << "Clave: " << claves[i] << ", Valor: " << valores[i] << endl;
+        for (int i = 0; i < size; ++i) {
+            cout << "Clave: " << keys[i] << ", Valor: " << values[i] << endl;
         }
     }
 
 private:
-    void redimensionar() {
-        capacidad *= 2;
-        linea* nuevasClaves = new linea[capacidad];
-        tiempo* nuevosValores = new tiempo[capacidad];
-        for (int i = 0; i < tamano; ++i) {
-            nuevasClaves[i] = claves[i];
-            nuevosValores[i] = valores[i];
+    void resize() {
+        capacity *= 2;
+        line* newKeys = new line[capacity];
+        time* newValues = new time[capacity];
+        for (int i = 0; i < size; ++i) {
+            newKeys[i] = keys[i];
+            newValues[i] = values[i];
         }
-        delete[] claves;
-        delete[] valores;
-        claves = nuevasClaves;
-        valores = nuevosValores;
+        delete[] keys;
+        delete[] values;
+        keys = newKeys;
+        values = newValues;
     }
 };
 
 int main() {
-    linea1<string, string> miMapa;
-    miMapa.agregarElemento("juan", "Uno");
-    miMapa.agregarElemento("david", "Dos");
-    miMapa.agregarElemento("ortiz", "Tres");
-    miMapa.mostrarElementos();
-    miMapa.agregarElemento("diaz", "Cuatro");
-    miMapa.agregarElemento("juan", "Cinco");
-    miMapa.agregarElemento("diaz", "Seis");
-    miMapa.agregarElemento("david", "Siete");
+    line1<string, string> miMapa;
+    miMapa.addElement("juan", "Uno");
+    miMapa.addElement("david", "Dos");
+    miMapa.addElement("ortiz", "Tres");
+    miMapa.showElements();
+    miMapa.addElement("diaz", "Cuatro");
+    miMapa.addElement("juan", "Cinco");
+    miMapa.addElement("diaz", "Seis");
+    miMapa.addElement("david", "Siete");
 
-    miMapa.mostrarElementos();
+    miMapa.showElements();
 
     return 0;
 }
