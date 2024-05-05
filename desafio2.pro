@@ -4,4 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        maps.cpp \
+        vectores.cpp
+
+HEADERS += \
+    maps.h \
+    vectores.h
