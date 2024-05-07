@@ -78,6 +78,26 @@ public:
         tamaño++;
     }
 
+    T3 separar_tiempo(T3 time, int n){
+        string primero, segundo;
+        // Buscar la posición de la coma
+        int comaPos = time.find(',');
+        // Extraer el primer número
+        primero = time.substr(0, comaPos);
+        segundo = time.substr(comaPos + 1);
+
+        // Convertir los números a enteros
+        if (n==1){
+            return primero;
+        }else if (n==2)
+        {
+            return segundo;
+        }
+
+
+
+    }
+
 
     void agregar_valor(T1 linea1, T2 estacion, T3 tiempo, int posicion){
         if (posicion>tamaño || posicion<0)
@@ -97,7 +117,32 @@ public:
         lineas[posicion]=linea1;
         estaciones[posicion]=estacion;
         tiempos[posicion]=tiempo;
-        tamaño++;
+        if (posicion>0 || posicion<tamaño)
+        {
+            string time1=tiempos[posicion-1];
+            string time2=separar_tiempo(time1, 1);
+            string time=separar_tiempo(tiempo, 1);
+            time2.append(","); time.append(time);
+            tiempos[posicion-1]=time2;
+
+            time1=tiempos[posicion+1];
+            time2=separar_tiempo(time1, 2);
+            time=separar_tiempo(tiempo, 2);
+            time2.append(","); time2.append(time);
+            tiempos[posicion+1]=time2;
+            tamaño++;
+        }
+        else if (posicion==tamaño)
+        {
+            string time1=tiempos[posicion-1];
+            string time2=separar_tiempo(time1, 1);
+            string time=separar_tiempo(tiempo, 1);
+            time2.append(","); time2.append("0");
+            tiempos[posicion-1]=time2;
+            tamaño++;
+        }
+
+
     }
 
 
@@ -113,11 +158,20 @@ public:
         cout<<con;
     }
 
+    bool estaRepetido(const T1& cadena, int n) {
+        for (int i = 0; i < n; ++i) {
+            if (cadena == lineas[i]) {
+                return true; // La cadena está repetida
+            }
+        }
+        return false; // La cadena no está repetida
+    }
     void saber_linea(){
         cout<<"Lineas existentes"<<endl;
-        for (int i = 0; i < tamaño; i++)
-        {
-            cout<<lineas[i]<<" ";
+        for (int i = 0; i < tamaño; ++i) {
+            if (!estaRepetido(lineas[i], i)) {
+                cout << lineas[i] << endl;
+            }
         }
 
     }
@@ -194,7 +248,9 @@ int main() {
     principal.saber_estacion_de_linea("david");*/
 
     red<std::string, std::string, std::string> metro;
-    metro.agregar_valor("david", "A", "7,6");
+    metro.agregar_valor("universidades", "A", "0,6");
+    metro.agregar_valor("universidades", "A", "0,6");
+    metro.saber_tiempo("universidades","A");
     int opcion = -1;
     std::string linea, estacion, tiempo;
     int posicion;
@@ -214,16 +270,17 @@ int main() {
 
         switch (opcion) {
         case 1:
-            cout<<"En que posicion quieres crear la estacion ";
-            metro.saber_linea();
-            cin>>posicion;
+            metro.saber_linea(); cout<<endl;
             std::cout << "Introduce el nombre de la linea: ";
             std::cin >> linea;
             std::cout << "Introduce el nombre de la estacion: ";
             std::cin >> estacion;
             std::cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
             std::cin >> tiempo;
+            cout<<"En que linea deseas crear una nueva estacion ";
+            cin>>posicion;
             metro.agregar_valor(linea, estacion, tiempo, posicion);
+            metro.saber_tiempo("universidades","A");
             break;
         case 2:
             std::cout << "Introduce el nombre de la linea: ";
@@ -260,8 +317,9 @@ int main() {
             metro.saber_linea();
             std::cin >> linea;
             std::cout << "Apartir de que estacion deseas crear una linea nueva: ";
-            //metro.saber_estacion_de_linea(linea);
+            metro.saber_estacion_de_linea(linea);
             std::cin >> estacion;
+            //metro.agregar_valor();
 
             break;
         case 7:
