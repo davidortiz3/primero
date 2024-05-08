@@ -146,6 +146,22 @@ public:
         }
     }
 
+    void imprimir_red() {
+        if (tamano == 0) {
+            std::cout << "La red está vacía." << std::endl;
+            return;
+        }
+        std::cout << "Linea: " << lineas[0] << ", Estaciones: " << estaciones[0];
+        for (int i = 1; i < tamano; i++) {
+            if (lineas[i] != lineas[i - 1]) {
+                std::cout << std::endl << "Linea: " << lineas[i] << ", Estaciones: " << estaciones[i];
+            } else {
+                std::cout << ", " << estaciones[i];
+            }
+        }
+        std::cout << std::endl;
+    }
+
     void eliminarElemento(int indice) {
         if (indice >= 0 && indice < tamano) {
             for (int i = indice; i < tamano - 1; ++i) {

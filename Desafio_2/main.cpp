@@ -16,6 +16,7 @@ int main() {
         std::cout << "6. Agregar una linea a la red Metro\n";
         std::cout << "7. Eliminar una linea de la red Metro\n";
         std::cout << "8. Saber cuantas estaciones tiene una red Metro\n";
+        std::cout << "9. Imprimir la red Metro\n";
         std::cout << "0. Salir\n";
         std::cout << "Por favor, elige una opcion: ";
         std::cin >> opcion;
@@ -79,6 +80,10 @@ int main() {
             break;
         }
         case 8:{
+            break;
+        }
+        case 9:{
+            metro.imprimir_red();
             break;
         }
         case 0:{
