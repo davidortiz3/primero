@@ -340,7 +340,8 @@ public:
                 cin>>estacion1;
                 cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
                 cin>>tiempo;
-                agregar_valor(estacion,estacion1, tiempo);
+                agregar_valor(estacion,estacion, "0,6");
+                agregar_estacion(estacion,estacion1, tiempo, 1);
                 cout<<endl<<"La linea se agrego correctamente :) "<<endl;
                 break;
             case 7:
