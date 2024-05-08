@@ -54,15 +54,11 @@ public:
         tamaño++;
     }
 
-    T3 separar_tiempo(const T3& time, int n){
+    T3 separar_tiempo(const T3& time, const int& n){
         string primero, segundo;
-        // Buscar la posición de la coma
         int comaPos = time.find(',');
-        // Extraer el primer número
         primero = time.substr(0, comaPos);
         segundo = time.substr(comaPos + 1);
-
-        // Convertir los números a enteros
         if (n==1){
             return primero;
         }else if (n==2)
@@ -75,7 +71,7 @@ public:
     }
 
 
-    void agregar_estacion(const T1& linea1, const T2& estacion, const T3& tiempo, int posicion){
+    void agregar_estacion(const T1& linea1, const T2& estacion, const T3& tiempo, const int& posicion){
         cout<<endl;
         if (posicion>tamaño || posicion<0)
         {
@@ -128,7 +124,7 @@ public:
             string time=separar_tiempo(tiempo, 1);
             time2.append(",");
             time2.append("0");
-            tiempos[posicion-1]=time2;
+            tiempos[posicion]=time2;
             tamaño++;
         }
     }
@@ -144,7 +140,7 @@ public:
         cout<<con;
     }
 
-    bool estaRepetido(const T1& cadena, int n) {
+    bool estaRepetido(const T1& cadena, const int& n) {
         for (int i = 0; i < n; ++i) {
             if (cadena == lineas[i]) {
                 return true;
@@ -164,7 +160,7 @@ public:
 
     }
 
-    void saber_linea(int n){
+    void saber_linea(const int& n){
         int con=0;
         cout<<endl<<"La cantidad de lineas es:"<<endl;
         for (int i = 0; i < tamaño; ++i) {
@@ -177,11 +173,13 @@ public:
 
     void saber_estacion_de_linea(const T1& linea){
         cout<<endl;
+        int con=1;
         for (int i = 0; i < tamaño; i++)
         {
             if (lineas[i]==linea)
             {
-                cout<<estaciones[i]<<" ";
+                cout<<con<<". "<<estaciones[i]<<endl;
+                con++;
             }
         }
     }
@@ -230,7 +228,7 @@ public:
         cout << endl;
     }
 
-    void eliminarElemento(int indice, const T2& estacion) {
+    void eliminarElemento( const int& indice, const T2& estacion) {
         if(verificacion(estacion, 1)){
             cout<<"La linea no se puede eliminar ya que pertenece a una estacion de trasferencia :("<<endl;
         }
@@ -257,7 +255,7 @@ public:
         return false;
     }
 
-    bool verificacion(const T3& buscado, int n) {
+    bool verificacion(const T3& buscado, const int& n) {
         for (int i = 0; i < tamaño; ++i) {
             if (lineas[i] == buscado) {
                 return true;
@@ -266,119 +264,121 @@ public:
         return false;
     }
 
+    void menu_principal(){
+        agregar_valor("universidades", "A", "0,6");
+        agregar_valor("universidades", "B", "6,33");
+        int opcion = -1;
+        string linea, estacion, tiempo, estacion1;
+        int posicion;
+        while (opcion != 0) {
+            cout << "\n*** Menú del sistema de metro ***\n";
+            cout << "1. Agregar una estación a una línea\n";
+            cout << "2. Eliminar una estación de una línea\n";
+            cout << "3. Saber cuántas líneas tiene una red Metro \n";
+            cout << "4. Saber las estaciones de una línea\n";
+            cout << "5. Saber si una estación dada pertenece a una línea específica\n";
+            cout << "6. Agregar una línea a la red Metro\n";
+            cout << "7. Eliminar una línea de la red Metro\n";
+            cout << "8. Saber cuántas estaciones tiene una red Metro\n";
+            cout << "9. Si deseas visualizar la red\n";
+            cout << "10. Si deseas visualizar el tiempo de alguna estacion\n";
+            cout << "0. Salir\n";
+            cout << "Por favor, elige una opción: ";
+            cin >> opcion;
+
+            switch (opcion) {
+            case 1:
+                saber_linea(); cout<<endl;
+                cout << "Introduce el nombre de la linea: ";
+                cin >> linea;
+                cout << "Introduce el nombre de la estacion: ";
+                cin >> estacion;
+                cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
+                cin >> tiempo;
+                cout<<"En que posicion deseas crear la estacion";
+                cin>>posicion;
+                agregar_estacion(linea, estacion, tiempo, posicion);
+                cout<<endl;
+                break;
+            case 2:
+                saber_linea(); cout<<endl;
+                cout << "Introduce el nombre de la linea: ";
+                cin >> linea;
+                cout << "Introduce el nombre de la estacion: ";
+                cin >> estacion;
+                int indice;
+                indice = saber_indice(linea, estacion);
+                eliminarElemento(indice, estacion);
+                break;
+            case 3:
+                saber_linea(1);
+                break;
+            case 4:
+                cout << "Introduce el nombre de la linea: ";
+                cin >> linea;
+                obtener_estacion(linea);
+                break;
+            case 5:
+                cout << "Introduce el nombre de la linea: ";
+                cin >> linea;
+                cout << "Introduce el nombre de la estacion: ";
+                cin >> estacion;
+                if (saber_indice(linea, estacion) != -1) {
+                    cout << "La estacion " << estacion << " pertenece a la linea " << linea << ".\n";
+                } else {
+                    cout << "La estacion " << estacion << " no pertenece a la linea " << linea << ".\n";
+                }
+                break;
+            case 6:
+                cout << "Ingrese a una de las lineas disponibles: ";
+                saber_linea();
+                cin >> linea;
+                cout << "Apartir de que estacion deseas crear una linea nueva: ";
+                saber_estacion_de_linea(linea);
+                cin >> estacion;
+                cout<<"Ingresa el nombre de la primera estacion: ";
+                cin>>estacion1;
+                cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
+                cin>>tiempo;
+                agregar_valor(estacion,estacion1, tiempo);
+                cout<<endl<<"La linea se agrego correctamente :) "<<endl;
+                break;
+            case 7:
+                cout << "Ingrese la linea que deseas eliminar: ";
+                saber_linea();
+                cin >> linea;
+                verificacion(linea);
+                break;
+            case 8:
+                break;
+            case 9:
+                imprimir_red();
+                cout<<endl;
+            case 10:
+                cout << "Ingrese la linea a la que desea acceder: ";
+                saber_linea();
+                cin>>linea;
+                cout << endl<<"Ingrese la linea que desea revisar: ";
+                saber_estacion_de_linea(linea);
+                cin >> estacion;
+                saber_tiempo(linea,estacion); cout<<endl;
+            case 0:
+                cout << "Saliendo del programa...\n";
+                break;
+            default:
+                cout << "Opcion no valida. Por favor, intenta de nuevo.\n";
+                break;
+            }
+        }
+    }
+
 };
+
+
 
 
 int main() {
     red<string, string, string> metro;
-    metro.agregar_valor("universidades", "A", "0,6");
-    metro.agregar_valor("universidades", "B", "76,89");
-    metro.agregar_valor("u", "B", "54,87");
-    //metro.saber_tiempo("universidades","B");
-    int opcion = -1;
-    std::string linea, estacion, tiempo, estacion1;
-    int posicion;
-    while (opcion != 0) {
-        cout << "\n*** Menú del sistema de metro ***\n";
-        cout << "1. Agregar una estación a una línea\n";
-        cout << "2. Eliminar una estación de una línea\n";
-        cout << "3. Saber cuántas líneas tiene una red Metro \n";
-        cout << "4. Saber las estaciones de una línea\n";
-        cout << "5. Saber si una estación dada pertenece a una línea específica\n";
-        cout << "6. Agregar una línea a la red Metro\n";
-        cout << "7. Eliminar una línea de la red Metro\n";
-        cout << "8. Saber cuántas estaciones tiene una red Metro\n";
-        cout << "9. Si deseas visualizar la red\n";
-        cout << "10. Si deseas visualizar el tiempo de alguna estacion\n";
-        cout << "0. Salir\n";
-        cout << "Por favor, elige una opción: ";
-        cin >> opcion;
-
-        switch (opcion) {
-        case 1:
-            metro.saber_linea(); cout<<endl;
-            cout << "Introduce el nombre de la linea: ";
-            cin >> linea;
-            cout << "Introduce el nombre de la estacion: ";
-            cin >> estacion;
-            cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
-            cin >> tiempo;
-            cout<<"En que posicion deseas crear la estacion";
-            cin>>posicion;
-            metro.agregar_estacion(linea, estacion, tiempo, posicion);
-            //metro.saber_tiempo("universidades","A");
-            cout<<endl;
-            metro.saber_tiempo("universidades","B");
-            break;
-        case 2:
-            metro.saber_linea(); cout<<endl;
-            cout << "Introduce el nombre de la linea: ";
-            cin >> linea;
-            cout << "Introduce el nombre de la estacion: ";
-            cin >> estacion;
-            int indice;
-            indice = metro.saber_indice(linea, estacion);
-            metro.eliminarElemento(indice, estacion);
-            break;
-        case 3:
-            metro.saber_linea(1);
-            break;
-        case 4:
-            cout << "Introduce el nombre de la linea: ";
-            cin >> linea;
-            metro.obtener_estacion(linea);
-            break;
-        case 5:
-            cout << "Introduce el nombre de la linea: ";
-            cin >> linea;
-            cout << "Introduce el nombre de la estacion: ";
-            cin >> estacion;
-            if (metro.saber_indice(linea, estacion) != -1) {
-                cout << "La estacion " << estacion << " pertenece a la linea " << linea << ".\n";
-            } else {
-                cout << "La estacion " << estacion << " no pertenece a la linea " << linea << ".\n";
-            }
-            break;
-        case 6:
-            cout << "Ingrese a una de las lineas disponibles: ";
-            metro.saber_linea();
-            cin >> linea;
-            cout << "Apartir de que estacion deseas crear una linea nueva: ";
-            metro.saber_estacion_de_linea(linea);
-            cin >> estacion;
-            cout<<"Ingresa el nombre de la primera estacion: ";
-            cin>>estacion1;
-            cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
-            cin>>tiempo;
-            metro.agregar_valor(estacion,estacion1, tiempo);
-            cout<<endl<<"La linea se agrego correctamente :) "<<endl;
-            break;
-        case 7:
-            cout << "Ingrese la linea que deseas eliminar: ";
-            metro.saber_linea();
-            cin >> linea;
-            metro.verificacion(linea);
-            break;
-        case 8:
-            break;
-        case 9:
-            metro.imprimir_red();
-            cout<<endl;
-        case 10:
-            cout << "Ingrese la linea a la que desea acceder: ";
-            metro.saber_linea();
-            cin>>linea;
-            cout << endl<<"Ingrese la linea que desea revisar: ";
-            metro.saber_estacion_de_linea(linea);
-            cin >> estacion;
-            metro.saber_tiempo(linea,estacion); cout<<endl;
-        case 0:
-            std::cout << "Saliendo del programa...\n";
-            break;
-        default:
-            std::cout << "Opcion no valida. Por favor, intenta de nuevo.\n";
-            break;
-        }
-    }
+    metro.menu_principal();
     return 0;
 }
