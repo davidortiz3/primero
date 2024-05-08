@@ -38,14 +38,14 @@ private:
     T2* estaciones;
     T3* tiempos;
     int cantidad;
-    int tamaño;
+    int tamano;
 
     void nueva_dimencion(){
         cantidad*=2;
         T1* nuevo=new T1[cantidad];
         T2* nuevo1=new T2[cantidad];
         T3* nuevo2=new T3[cantidad];
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             nuevo[i]=lineas[i];
             nuevo1[i]=estaciones[i];
@@ -59,7 +59,7 @@ private:
         tiempos=nuevo2;
     }
 public:
-    red() : cantidad(10), tamaño(0){
+    red() : cantidad(10), tamano(0){
         lineas=new T1[cantidad];
         estaciones=new T2[cantidad];
         tiempos=new T3[cantidad];
@@ -71,19 +71,19 @@ public:
     }
 
     void agregar_valor(T1 linea1, T2 estacion, T3 tiempo){
-        if(tamaño>=cantidad){
+        if(tamano>=cantidad){
             nueva_dimencion();
         }
 
-        lineas[tamaño]=linea1;
-        estaciones[tamaño]=estacion;
-        tiempos[tamaño]=tiempo;
-        tamaño++;
+        lineas[tamano]=linea1;
+        estaciones[tamano]=estacion;
+        tiempos[tamano]=tiempo;
+        tamano++;
     }
 
     void obtener_estacion(const T1& temp){
         int con=0;
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if(lineas[i]==temp){
                 con++;
@@ -93,14 +93,14 @@ public:
     }
 
     void saber_linea(){
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             std::cout<<lineas[i]<<" ";
         }
     }
 
     void saber_estacion_de_linea(T1 linea){
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if (lineas[i]==linea)
             {
@@ -109,8 +109,19 @@ public:
         }
     }
 
+    bool estacionExisteEnLinea(T1 linea, T2 estacion){
+        for (int i = 0; i < tamano; i++)
+        {
+            if (lineas[i]==linea && estaciones[i]==estacion)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void saber_tiempo(T1 linea, T2 estacion){
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if (lineas[i]==linea)
             {
@@ -123,7 +134,7 @@ public:
     }
 
     int saber_indice(T1 linea, T2 estacion){
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if (lineas[i]==linea)
             {
@@ -136,17 +147,18 @@ public:
     }
 
     void eliminarElemento(int indice) {
-        if (indice >= 0 && indice < tamaño) {
-            for (int i = indice; i < tamaño - 1; ++i) {
+        if (indice >= 0 && indice < tamano) {
+            for (int i = indice; i < tamano - 1; ++i) {
                 lineas[i] = lineas[i + 1];
                 estaciones[i] = estaciones[i + 1];
                 tiempos[i] = tiempos[i + 1];
             }
-            tamaño--;
+            tamano--;
         } else {
-            std::cerr<<"Error: Índice fuera de rango." <<std::endl;
+            std::cerr<<"Error: Indice fuera de rango." <<std::endl;
         }
     }
 };
 
 #endif // RED_H
+
