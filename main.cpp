@@ -10,14 +10,14 @@ private:
     T2* estaciones;
     T3* tiempos;
     int cantidad;
-    int tamaño;
+    int tamano;
 
     void nueva_dimencion(){
         cantidad*=2;
         T1* nuevo=new T1[cantidad];
         T2* nuevo1=new T2[cantidad];
         T3* nuevo2=new T3[cantidad];
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             nuevo[i]=lineas[i];
             nuevo1[i]=estaciones[i];
@@ -32,7 +32,7 @@ private:
 
     }
 public:
-    red() : cantidad(10), tamaño(0){
+    red() : cantidad(10), tamano(0){
         lineas=new T1[cantidad];
         estaciones=new T2[cantidad];
         tiempos=new T3[cantidad];
@@ -44,14 +44,14 @@ public:
     }
 
     void agregar_valor(const T1& linea1, const T2& estacion, const T3& tiempo){
-        if(tamaño>=cantidad){
+        if(tamano>=cantidad){
             nueva_dimencion();
         }
 
-        lineas[tamaño]=linea1;
-        estaciones[tamaño]=estacion;
-        tiempos[tamaño]=tiempo;
-        tamaño++;
+        lineas[tamano]=linea1;
+        estaciones[tamano]=estacion;
+        tiempos[tamano]=tiempo;
+        tamano++;
     }
 
     T3 separar_tiempo(const T3& time, const int& n){
@@ -71,16 +71,23 @@ public:
     }
 
 
-    void agregar_estacion(const T1& linea1, const T2& estacion, const T3& tiempo, const int& posicion){
+    int agregar_estacion(const T1& linea1, const T2& estacion, const T3& tiempo, const int& posicion){
         cout<<endl;
-        if (posicion>tamaño || posicion<0)
+        if (obtener_estacion1(linea1, estacion))
+        {
+            cout<<"Esta estacion no se puede crear ya que no pueden haber dos con el mismo nombre:"<<endl;
+            return -1;
+        }
+
+        if (posicion>tamano || posicion<0)
         {
             cerr<<"La posicion esta fuera de rango"<<endl;
+            return -1;
         }
-        if(tamaño>=cantidad){
+        if(tamano>=cantidad){
             nueva_dimencion();
         }
-        for (int i = tamaño; i >posicion; i--)
+        for (int i = tamano; i >posicion; i--)
         {
             lineas[i]=lineas[i-1];
             estaciones[i]=estaciones[i-1];
@@ -90,7 +97,7 @@ public:
         estaciones[posicion]=estacion;
         tiempos[posicion]=tiempo;
 
-        if (posicion>0 || posicion<tamaño)
+        if (posicion>0 || posicion<tamano)
         {
             string time1=tiempos[posicion-1];
             //cout<<endl<<time1<<"..."<<endl;
@@ -115,9 +122,11 @@ public:
             result1.append(n1);
             //cout<<endl<<result1<<endl;
             tiempos[posicion+1]=result1;
-            tamaño++;
+            tamano++;
+            cout<<"La estacion se creo correctamente:"<<endl;
+            return -1;
         }
-        else if (posicion==tamaño)
+        else if (posicion==tamano)
         {
             string time1=tiempos[posicion-1];
             string time2=separar_tiempo(time1, 1);
@@ -125,19 +134,41 @@ public:
             time2.append(",");
             time2.append("0");
             tiempos[posicion]=time2;
-            tamaño++;
+            tamano++;
+            cout<<"La estacion se creo correctamente:"<<endl;
+            return -1;
         }
     }
     void obtener_estacion(const T1& temp){
         int con=0;
         cout<<endl<<"La cantidad de estaciones que tiene esta linea es: "<<endl;
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if(lineas[i]==temp){
                 con++;
             }
         }
         cout<<con;
+    }
+
+    bool obtener_estacion1(const T1& temp, const T2& estacion){
+        int con=0;
+        for (int i = 0; i < tamano; i++)
+        {
+            if(lineas[i]==temp){
+                if (estaciones[i]==estacion)
+                {
+                    con++;
+                }
+            }
+        }
+        if (con!=0)
+        {
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     bool estaRepetido(const T1& cadena, const int& n) {
@@ -151,7 +182,7 @@ public:
     void saber_linea(){
         int con=1;
         cout<<"Lineas existentes"<<endl;
-        for (int i = 0; i < tamaño; ++i) {
+        for (int i = 0; i < tamano; ++i) {
             if (!estaRepetido(lineas[i], i)) {
                 cout<<con<<". "<< lineas[i] << endl;
                 con++;
@@ -163,7 +194,7 @@ public:
     void saber_linea(const int& n){
         int con=0;
         cout<<endl<<"La cantidad de lineas es:"<<endl;
-        for (int i = 0; i < tamaño; ++i) {
+        for (int i = 0; i < tamano; ++i) {
             if (!estaRepetido(lineas[i], i)) {
                 con++;
             }
@@ -174,7 +205,7 @@ public:
     void saber_estacion_de_linea(const T1& linea){
         cout<<endl;
         int con=1;
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if (lineas[i]==linea)
             {
@@ -186,7 +217,7 @@ public:
 
     void saber_tiempo(const T1& linea, const T2& estacion){
         cout<<"El tiempo es:"; cout<<endl;
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if (lineas[i]==linea)
             {
@@ -199,7 +230,7 @@ public:
     }
 
     int saber_indice(const T1& linea, const T2& estacion){
-        for (int i = 0; i < tamaño; i++)
+        for (int i = 0; i < tamano; i++)
         {
             if (lineas[i]==linea)
             {
@@ -213,12 +244,12 @@ public:
     }
 
     void imprimir_red() {
-        if (tamaño == 0) {
+        if (tamano == 0) {
             cout << "La red está vacía." << endl;
             return;
         }
         cout << "Linea: " << lineas[0] << ", Estaciones: " << estaciones[0];
-        for (int i = 1; i < tamaño; i++) {
+        for (int i = 1; i < tamano; i++) {
             if (lineas[i] != lineas[i - 1]) {
                 cout << endl << "Linea: " << lineas[i] << ", Estaciones: " << estaciones[i];
             } else {
@@ -232,20 +263,20 @@ public:
         if(verificacion(estacion, 1)){
             cout<<"La linea no se puede eliminar ya que pertenece a una estacion de trasferencia :("<<endl;
         }
-        else if (indice >= 0 && indice < tamaño) {
-            for (int i = indice; i < tamaño - 1; ++i) {
+        else if (indice >= 0 && indice < tamano) {
+            for (int i = indice; i < tamano - 1; ++i) {
                 lineas[i] = lineas[i + 1];
                 estaciones[i] = estaciones[i + 1];
                 tiempos[i] = tiempos[i + 1];
             }
-            tamaño--;
+            tamano--;
         } else {
             cerr<<"Error: Índice fuera de rango." <<endl;
         }
     }
 
     bool verificacion(const T3& buscado) {
-        for (int i = 0; i < tamaño; ++i) {
+        for (int i = 0; i < tamano; ++i) {
             if (lineas[i] == buscado) {
                 cout<<"La linea no se puede eliminar ya que pertenece a una estacion de trasferencia :("<<endl;
                 return true;
@@ -256,12 +287,16 @@ public:
     }
 
     bool verificacion(const T3& buscado, const int& n) {
-        for (int i = 0; i < tamaño; ++i) {
+        for (int i = 0; i < tamano; ++i) {
             if (lineas[i] == buscado) {
                 return true;
             }
         }
         return false;
+    }
+
+    void total_estaciones() {
+        cout << "El total de estaciones en la red Metro es: " << tamano << endl;
     }
 
     void menu_principal(){
@@ -272,6 +307,7 @@ public:
         int posicion;
         while (opcion != 0) {
             cout << "\n*** Menú del sistema de metro ***\n";
+            cout << "\n*** La red metro se inicializo con una linea ***\n";
             cout << "1. Agregar una estación a una línea\n";
             cout << "2. Eliminar una estación de una línea\n";
             cout << "3. Saber cuántas líneas tiene una red Metro \n";
@@ -351,6 +387,8 @@ public:
                 verificacion(linea);
                 break;
             case 8:
+                cout << "Calculando el total de estaciones en la red Metro...\n";
+                total_estaciones();
                 break;
             case 9:
                 imprimir_red();
