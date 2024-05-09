@@ -229,6 +229,19 @@ public:
         }
     }
 
+    T3 saber_tiempo(const T1& linea, const T2& estacion, const int& n){
+        for (int i = 0; i < tamano; i++)
+        {
+            if (lineas[i]==linea)
+            {
+                if (estaciones[i]==estacion)
+                {
+                    return tiempos[i];
+                }
+            }
+        }
+    }
+
     int saber_indice(const T1& linea, const T2& estacion){
         for (int i = 0; i < tamano; i++)
         {
@@ -299,9 +312,28 @@ public:
         cout << "El total de estaciones en la red Metro es: " << tamano << endl;
     }
 
+    int tiempo_individual(const T1& linea , string estacion){
+        T3 time =saber_tiempo(linea, estacion,1);
+        T3 tiempo_anterior=separar_tiempo(time, 1);
+        int tiempo=stoi(tiempo_anterior);
+        return tiempo;
+    }
+
+    void contar_tiempo(const T1& linea, const T3& estacion, const T3& estacion2){
+        int indice, result=0, indice2;
+        indice=saber_indice(linea, estacion);
+        indice2=saber_indice(linea, estacion2);
+        for (int i = indice; i <indice2 ; ++i) {
+            string time=estaciones[i];
+            result+=tiempo_individual(linea, time);
+        }
+        cout<<endl<<"El tiempo hasta la proxima esa estacion es: "<<result<<endl;
+    }
+
     void menu_principal(){
         agregar_valor("universidades", "A", "0,6");
-        agregar_valor("universidades", "B", "6,0");
+        agregar_valor("universidades", "B", "6,8");
+        agregar_valor("universidades", "C", "8,0");
         int opcion = -1;
         string linea, estacion, tiempo, estacion1;
         int posicion;
@@ -317,6 +349,7 @@ public:
             cout << "8. Saber cuantas estaciones tiene una red Metro\n";
             cout << "9. Si deseas visualizar la red\n";
             cout << "10. Si deseas visualizar el tiempo de alguna estacion\n";
+            cout << "11. Calcular tiempo entre estaciones de la misma linea\n";
             cout << "0. Salir\n";
             cout << "Por favor, elige una opcion: ";
             cin >> opcion;
@@ -402,6 +435,17 @@ public:
                 cin >> estacion;
                 saber_tiempo(linea,estacion); cout<<endl;
                 break;
+            case 11:
+                cout << "Ingrese a una de las lineas disponibles: ";
+                saber_linea();
+                cin >> linea;
+                cout << "Apartir de que estacion deseas iniciar: ";
+                saber_estacion_de_linea(linea);
+                cin >> estacion;
+                cout << "Hasta que estacion deseas ir? ";
+                saber_estacion_de_linea(linea);
+                cin >> estacion;
+                contar_tiempo(linea, estacion, estacion1);
             case 0:
                 cout << "Saliendo del programa...\n";
                 break;
