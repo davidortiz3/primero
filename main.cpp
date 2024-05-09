@@ -301,25 +301,24 @@ public:
 
     void menu_principal(){
         agregar_valor("universidades", "A", "0,6");
-        agregar_valor("universidades", "B", "6,33");
+        agregar_valor("universidades", "B", "6,0");
         int opcion = -1;
         string linea, estacion, tiempo, estacion1;
         int posicion;
         while (opcion != 0) {
-            cout << "\n*** Menú del sistema de metro ***\n";
-            cout << "\n*** La red metro se inicializo con una linea ***\n";
-            cout << "1. Agregar una estación a una línea\n";
-            cout << "2. Eliminar una estación de una línea\n";
-            cout << "3. Saber cuántas líneas tiene una red Metro \n";
-            cout << "4. Saber las estaciones de una línea\n";
-            cout << "5. Saber si una estación dada pertenece a una línea específica\n";
-            cout << "6. Agregar una línea a la red Metro\n";
-            cout << "7. Eliminar una línea de la red Metro\n";
-            cout << "8. Saber cuántas estaciones tiene una red Metro\n";
+            cout << "\n*** Menu del sistema de metro ***\n";
+            cout << "1. Agregar una estacion a una linea\n";
+            cout << "2. Eliminar una estacion de una linea\n";
+            cout << "3. Saber cuantas lineas tiene una red Metro \n";
+            cout << "4. Saber las estaciones de una linea\n";
+            cout << "5. Saber si una estacion dada pertenece a una linea especifica\n";
+            cout << "6. Agregar una linea a la red Metro\n";
+            cout << "7. Eliminar una linea de la red Metro\n";
+            cout << "8. Saber cuantas estaciones tiene una red Metro\n";
             cout << "9. Si deseas visualizar la red\n";
             cout << "10. Si deseas visualizar el tiempo de alguna estacion\n";
             cout << "0. Salir\n";
-            cout << "Por favor, elige una opción: ";
+            cout << "Por favor, elige una opcion: ";
             cin >> opcion;
 
             switch (opcion) {
@@ -331,7 +330,8 @@ public:
                 cin >> estacion;
                 cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
                 cin >> tiempo;
-                cout<<"En que posicion deseas crear la estacion";
+                cout<<"En que posicion deseas crear la estacion donde la primera estacion es '0':"<<endl;
+                saber_estacion_de_linea(linea);
                 cin>>posicion;
                 agregar_estacion(linea, estacion, tiempo, posicion);
                 cout<<endl;
@@ -376,8 +376,7 @@ public:
                 cin>>estacion1;
                 cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
                 cin>>tiempo;
-                agregar_valor(estacion,estacion, "0,6");
-                agregar_estacion(estacion,estacion1, tiempo, 1);
+                agregar_valor(estacion,estacion1, tiempo);
                 cout<<endl<<"La linea se agrego correctamente :) "<<endl;
                 break;
             case 7:
@@ -393,6 +392,7 @@ public:
             case 9:
                 imprimir_red();
                 cout<<endl;
+                break;
             case 10:
                 cout << "Ingrese la linea a la que desea acceder: ";
                 saber_linea();
@@ -401,6 +401,7 @@ public:
                 saber_estacion_de_linea(linea);
                 cin >> estacion;
                 saber_tiempo(linea,estacion); cout<<endl;
+                break;
             case 0:
                 cout << "Saliendo del programa...\n";
                 break;
