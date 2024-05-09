@@ -1,6 +1,3 @@
-#ifndef RED_H
-#define RED_H
-
 #include <iostream>
 #include <string>
 using namespace std;
@@ -15,7 +12,7 @@ private:
     int cantidad;
     int tamano;
 
-    void nueva_dimencion(){
+    void nueva_dimension(){
         cantidad*=2;
         T1* nuevo=new T1[cantidad];
         T2* nuevo1=new T2[cantidad];
@@ -32,6 +29,7 @@ private:
         lineas=nuevo;
         estaciones=nuevo1;
         tiempos=nuevo2;
+
     }
 public:
     red() : cantidad(10), tamano(0){
@@ -47,7 +45,7 @@ public:
 
     void agregar_valor(const T1& linea1, const T2& estacion, const T3& tiempo){
         if(tamano>=cantidad){
-            nueva_dimencion();
+            nueva_dimension();
         }
 
         lineas[tamano]=linea1;
@@ -67,16 +65,27 @@ public:
         {
             return segundo;
         }
+
+
+
     }
 
-    void agregar_estacion(const T1& linea1, const T2& estacion, const T3& tiempo, const int& posicion){
+
+    int agregar_estacion(const T1& linea1, const T2& estacion, const T3& tiempo, const int& posicion){
         cout<<endl;
+        if (obtener_estacion1(linea1, estacion))
+        {
+            cout<<"Esta estacion no se puede crear ya que no pueden haber dos con el mismo nombre:"<<endl;
+            return -1;
+        }
+
         if (posicion>tamano || posicion<0)
         {
             cerr<<"La posicion esta fuera de rango"<<endl;
+            return -1;
         }
         if(tamano>=cantidad){
-            nueva_dimencion();
+            nueva_dimension();
         }
         for (int i = tamano; i >posicion; i--)
         {
@@ -91,7 +100,9 @@ public:
         if (posicion>0 || posicion<tamano)
         {
             string time1=tiempos[posicion-1];
+            //cout<<endl<<time1<<"..."<<endl;
             string time2=separar_tiempo(time1, 1);
+            //cout<<endl<<time2<<endl;
             string time=separar_tiempo(tiempo, 1);
             string result;
             result.append(time2);
@@ -100,14 +111,20 @@ public:
             tiempos[posicion-1]=result;
 
             string n=tiempos[posicion+1];
+            //cout<<endl<<n<<"..."<<endl;
             string n1=separar_tiempo(n, 2);
+            //cout<<endl<<n1<<"."<<endl;
             string time3=separar_tiempo(tiempo, 2);
+            //cout<<endl<<time3<<"."<<endl;
             string result1;
             result1.append(time3);
             result1.append(",");
             result1.append(n1);
+            //cout<<endl<<result1<<endl;
             tiempos[posicion+1]=result1;
             tamano++;
+            cout<<"La estacion se creo correctamente:"<<endl;
+            return -1;
         }
         else if (posicion==tamano)
         {
@@ -118,6 +135,8 @@ public:
             time2.append("0");
             tiempos[posicion]=time2;
             tamano++;
+            cout<<"La estacion se creo correctamente:"<<endl;
+            return -1;
         }
     }
     void obtener_estacion(const T1& temp){
@@ -130,6 +149,26 @@ public:
             }
         }
         cout<<con;
+    }
+
+    bool obtener_estacion1(const T1& temp, const T2& estacion){
+        int con=0;
+        for (int i = 0; i < tamano; i++)
+        {
+            if(lineas[i]==temp){
+                if (estaciones[i]==estacion)
+                {
+                    con++;
+                }
+            }
+        }
+        if (con!=0)
+        {
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     bool estaRepetido(const T1& cadena, const int& n) {
@@ -220,10 +259,6 @@ public:
         cout << endl;
     }
 
-    void total_estaciones() {
-        cout << "El total de estaciones en la red Metro es: " << tamano << endl;
-    }
-
     void eliminarElemento( const int& indice, const T2& estacion) {
         if(verificacion(estacion, 1)){
             cout<<"La linea no se puede eliminar ya que pertenece a una estacion de trasferencia :("<<endl;
@@ -260,6 +295,10 @@ public:
         return false;
     }
 
+    void total_estaciones() {
+        cout << "El total de estaciones en la red Metro es: " << tamano << endl;
+    }
+
     void menu_principal(){
         agregar_valor("universidades", "A", "0,6");
         agregar_valor("universidades", "B", "6,33");
@@ -267,19 +306,20 @@ public:
         string linea, estacion, tiempo, estacion1;
         int posicion;
         while (opcion != 0) {
-            cout << "\n*** Menu del sistema de metro ***\n";
-            cout << "1. Agregar una estacion a una linea\n";
-            cout << "2. Eliminar una estacion de una linea\n";
-            cout << "3. Saber cuantas lineas tiene una red Metro \n";
-            cout << "4. Saber las estaciones de una linea\n";
-            cout << "5. Saber si una estacion dada pertenece a una linea especifica\n";
-            cout << "6. Agregar una linea a la red Metro\n";
-            cout << "7. Eliminar una linea de la red Metro\n";
-            cout << "8. Saber cuantas estaciones tiene una red Metro\n";
+            cout << "\n*** Menú del sistema de metro ***\n";
+            cout << "\n*** La red metro se inicializo con una linea ***\n";
+            cout << "1. Agregar una estación a una línea\n";
+            cout << "2. Eliminar una estación de una línea\n";
+            cout << "3. Saber cuántas líneas tiene una red Metro \n";
+            cout << "4. Saber las estaciones de una línea\n";
+            cout << "5. Saber si una estación dada pertenece a una línea específica\n";
+            cout << "6. Agregar una línea a la red Metro\n";
+            cout << "7. Eliminar una línea de la red Metro\n";
+            cout << "8. Saber cuántas estaciones tiene una red Metro\n";
             cout << "9. Si deseas visualizar la red\n";
             cout << "10. Si deseas visualizar el tiempo de alguna estacion\n";
             cout << "0. Salir\n";
-            cout << "Por favor, elige una opcion: ";
+            cout << "Por favor, elige una opción: ";
             cin >> opcion;
 
             switch (opcion) {
@@ -336,7 +376,8 @@ public:
                 cin>>estacion1;
                 cout << "Introduce el tiempo con respecto a las estaciones anterior y siguiente separadas con una coma (,) : ";
                 cin>>tiempo;
-                agregar_valor(estacion,estacion1, tiempo);
+                agregar_valor(estacion,estacion, "0,6");
+                agregar_estacion(estacion,estacion1, tiempo, 1);
                 cout<<endl<<"La linea se agrego correctamente :) "<<endl;
                 break;
             case 7:
@@ -352,7 +393,6 @@ public:
             case 9:
                 imprimir_red();
                 cout<<endl;
-                break;
             case 10:
                 cout << "Ingrese la linea a la que desea acceder: ";
                 saber_linea();
@@ -361,7 +401,6 @@ public:
                 saber_estacion_de_linea(linea);
                 cin >> estacion;
                 saber_tiempo(linea,estacion); cout<<endl;
-                break;
             case 0:
                 cout << "Saliendo del programa...\n";
                 break;
@@ -371,6 +410,7 @@ public:
             }
         }
     }
+
 };
 
 #endif // RED_H
